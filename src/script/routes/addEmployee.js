@@ -6,7 +6,10 @@ let addEmployee = {
   onBeforeEnter: () => {},
   onEnter: () => {
     let renderPage = new render();
-    renderPage.renderEmployeePages();
+    let worker = new employee();
+    Promise.resolve()
+      .then(() => renderPage.renderEmployeePages())
+      .then(() => worker.addHandlers());
   },
   onLeave: () => {}
 };
