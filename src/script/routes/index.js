@@ -1,17 +1,14 @@
-import indexPage from "../components/indexPage";
+import indexPage from '../components/indexPage'
+import render from '../components/render'
 var index = {
-  name: "index",
-  match: "",
+  name: 'index',
+  match: '',
   onBeforeEnter: () => {},
   onEnter: () => {
-    if (localStorage.getItem("token")) {
-      location.hash = "main";
-    } else {
-      let index = new indexPage();
-      index.renderPage();
-    }
+    let renderPage = new render()
+    renderPage.renderingIndexPages()
   },
   onLeave: () => {}
-};
+}
 
-export { index };
+export { index }

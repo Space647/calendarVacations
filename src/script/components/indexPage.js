@@ -1,6 +1,6 @@
 class indexPage {
   renderPage () {
-    let placeRender = document.querySelector('div')
+    let placeRender = document.querySelector('.workPlace')
     placeRender.innerHTML = ``
   }
 }
