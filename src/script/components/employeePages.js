@@ -1,2 +1,2 @@
-class employee {}
-export default employee
+class employeePages {}
+export default employeePages;
