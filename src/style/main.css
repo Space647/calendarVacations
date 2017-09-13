@@ -1,15 +1,36 @@
 body {
 }
-.btnCenter {
-  margin: 0 0 0 45%;
-}
 .dateNow {
-  margin: 1% 5% 0 29%;
+  margin: 0% 5% 0 50%;
 }
 .btn-group {
   padding: 2% 0% 2% 10%;
   margin: 0 10% 0 100%;
 }
 .workPlace {
+  text-align: center;
   margin: 10% 25%;
+}
+.send {
+  margin: 1% 0 0 0;
+}
+.lb1 {
+  padding: 0px 79% 0 0px;
+}
+.lb2 {
+  padding: 0px 93% 0 0px;
+}
+input[type="date"] {
+  margin: 10px 0;
+  min-width: 216px;
+}
+.sp1 {
+  margin: 0 16% 0 0;
+}
+.sp2 {
+  margin: 0 13% 0 0;
+  padding: 0 0 0 1px;
+}
+.sp3 {
+  margin: 0 14% 0 0;
 }

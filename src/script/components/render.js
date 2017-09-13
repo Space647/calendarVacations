@@ -4,13 +4,13 @@ class render {
     document.querySelector("header").innerHTML = `
     <div class="container">
     <div class="row">
-      <div class="col text-center">
-        <span class="dateNows">текущая дата 09 09 2017</span>
+      <div class="col-md-10">
+        <span class="dateNow"></span>
       </div>
-      <div class="col text-right">
+      <div class="col-md-2">
       <div class="btn-group" role="group" aria-label="Basic example">
       <a href="#addEmployee"><button type="button" class="btn btn-secondary">add employee</button></a>
-      <a href="#add><button type="button" class="btn btn-secondary">add vacation</button></a>
+      <a href="#addVacation"><button type="button" class="btn btn-secondary">add vacation</button></a>
       </div>
       </div>
     </div>
@@ -21,13 +21,13 @@ class render {
     document.querySelector("header").innerHTML = `
     <div class="container">
     <div class="row">
-      <div class="col text-center">
-        <span class="dateNows">текущая дата 09 09 2017</span>
+      <div class="col-md-10">
+        <span class="dateNow"></span>
       </div>
-      <div class="col text-right">
+      <div class="col-md-2">
       <div class="btn-group" role="group" aria-label="Basic example">
-      <a href="#addEmployee"><button type="button" class="btn btn-secondary">add employee</button></a>
-      <a href="#add><button type="button" class="btn btn-secondary">add vacation</button></a>
+      <a href="#addVacation"><button type="button" class="btn btn-secondary">add vacation</button></a>
+      <a href="#"><button type="button" class="btn btn-secondary">Back</button></a>
       </div>
       </div>
     </div>
@@ -35,16 +35,74 @@ class render {
     document.querySelector(".workPlace").innerHTML = `
     <form class="employeeForm">
     <div class="form-group">
-      <label>Full name of the employee</label>
+      <label class="lb1">Full name of the employee</label>
       <input type="text" class="form-control fullName"  placeholder="Enter full name">
     </div>
     <div class="form-group">
-      <label>Position</label>
+      <label class="lb2">Position</label>
       <input type="text" class="form-control position" placeholder="Enter position">
     </div>
     <button type="button" class="btn btn-primary btnCenter send">Submit</button>
     </form>
     `;
+  }
+  renderVacationPages(ArrObj) {
+    Promise.resolve();
+    document.querySelector("header").innerHTML = `
+    <div class="container">
+    <div class="row">
+      <div class="col-md-10">
+        <span class="dateNow"></span>
+      </div>
+      <div class="col-md-2">
+      <div class="btn-group" role="group" aria-label="Basic example">
+      <a href="#addEmployee"><button type="button" class="btn btn-secondary">add employee</button></a>
+      <a href="#"><button type="button" class="btn btn-secondary">Back</button></a>
+      </div>
+      </div>
+    </div>
+  </div>`;
+    let placeRenderWorkPlace, seleckMenu;
+    placeRenderWorkPlace = document.querySelector(".workPlace");
+    seleckMenu = ArrObj.map(function (obj) {
+      return (seleckMenu = `<option selected>${obj.fullName}</option>`);
+    }).join(" ");
+    placeRenderWorkPlace.innerHTML = `
+    <div class="container">
+      <div class="row">
+      <div class="col-md-12">
+      <span class="sp1">Full name</span>
+      </div>
+      <div class="col-md-12">
+      <select class="custom-select">${seleckMenu}</select>
+      </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+    <span class="sp2">Vacation from</span>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+    <input type="date" name="calendar" class="vacationFrom">
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+    <span class="sp3">Vacation on</span>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+    <input type="date" name="calendar" class="vacationOn">
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+    <button type="button" class="btn btn-primary btnCenter send">Submit</button>
+    </div>
+    </div>
+    </div>`;
   }
 }
 export default render;

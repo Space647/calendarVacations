@@ -1,7 +1,15 @@
 import db from "./db";
+import render from "./render";
 class employeePages {
   constructor() {
     this.dataBase = new db();
+    this.renderPage = new render();
+  }
+  workPages() {
+    Promise.resolve()
+      .then(() => this.renderPage.renderEmployeePages())
+      .then(() => this.addHandlers())
+      .then(() => this.showNowDate());
   }
   addHandlers() {
     Promise.resolve();
@@ -11,7 +19,8 @@ class employeePages {
     Promise.resolve()
       .then(() => this.createStructure())
       .then(obj => this.takeFullNameAndPosition(obj))
-      .then(obj => this.dataBase.saveInDb(obj));
+      .then(obj => this.dataBase.saveInDb(obj))
+      .then(() => this.clearTextBox());
   }
   createStructure() {
     Promise.resolve();
@@ -33,11 +42,19 @@ class employeePages {
     Promise.resolve();
     obj.fullName = document.querySelector(".fullName").value;
     obj.position = document.querySelector(".position").value;
-    console.log(obj);
+    if (obj.fullName === "" || obj.position === "") return;
     return obj;
   }
+  clearTextBox() {
+    Promise.resolve();
+    document.querySelector(".fullName").value = "";
+    document.querySelector(".position").value = "";
+  }
   showNowDate() {
-    document.querySelector(".nowDate");
+    let date = new Date();
+    document.querySelector(
+      ".dateNow"
+    ).innerHTML = `date now ${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`;
   }
 }
 export default employeePages;
