@@ -5,7 +5,7 @@ class businessLogic {
   }
   checkData(arrObj) {
     let array;
-    Promise.resolve()
+    return Promise.resolve()
       .then(() => this.checkingTheDateRange(arrObj))
       .then(arr => this.checkForNumberOfDays(arr))
       .then(arr => {
@@ -16,7 +16,7 @@ class businessLogic {
   }
   checkingTheDateRange(arrObj) {
     Promise.resolve();
-    if (arrObj == false || arrObj == undefined) return;
+    if (arrObj == false || arrObj == undefined) return false;
     let vacationFrom, vacationOn, days;
     vacationFrom = new Date(`${arrObj[0].vacationFrom}`);
     vacationOn = new Date(`${arrObj[0].vacationOn}`);
@@ -29,17 +29,18 @@ class businessLogic {
   }
   checkForNumberOfDays(arrObj) {
     Promise.resolve();
+    if (arrObj == false || arrObj == undefined) return false;
     let lastVacationDate, dateVacationFrom, lastVacation, vacatiFrom, check;
-    if (arrObj == false || arrObj == undefined) return;
     if (arrObj[1].daysInTheLastVacation === "") {
       arrObj[1].daysInTheLastVacation = arrObj[3];
       return arrObj;
     } else {
-      lastVacation = arrObj[1].vacation[-1].vacationOn;
-      lastVacationDate = new Date(`${lastVacation}`);
-      dateVacationFrom = new Date(`${arrObj[0].vacationFrom}`);
+      let lng = arrObj[1].vacation.length;
+      lastVacation = arrObj[1].vacation[lng - 1].vacationOn;
+      lastVacationDate = new Date(lastVacation);
+      dateVacationFrom = new Date(arrObj[0].vacationFrom);
       lastVacation = lastVacationDate.setDate(
-        lastVacationDate.getDate() + Number(arrObj[1].daysInTheLastVacation)
+        lastVacationDate.getDate() + arrObj[1].daysInTheLastVacation
       );
       check = dateVacationFrom >= lastVacation;
       if (check) {
@@ -50,7 +51,7 @@ class businessLogic {
   }
   checkForTheNumberOfDaysOfVacation(arrObj) {
     Promise.resolve();
-    if (arrObj == false || arrObj == undefined) return;
+    if (arrObj == false || arrObj == undefined) return false;
     let days = arrObj[1].numberOfDaysOfVacation - arrObj[1].daysInTheLastVacation;
     if (days < 0) {
       return false;
@@ -60,15 +61,12 @@ class businessLogic {
   }
   checkForTheNumberOfEmployeesOnVacation(arrObjAllUsers, arrObj) {
     Promise.resolve();
-    if (arrObj == false || arrObj == undefined) return;
-    console.log(arrObjAllUsers);
-    console.log(arrObj);
+    if (arrObj == false || arrObj == undefined) return false;
     let objSelectpProfession,
       arrayOfObjectsWithYourPeoplePositions,
       countPosition = 0;
     arrayOfObjectsWithYourPeoplePositions = arrObjAllUsers.map(function(user, count) {
       if (user.position == arrObj[1].position) {
-        countPosition++;
         return user;
       }
     });
@@ -77,8 +75,53 @@ class businessLogic {
         return x !== undefined && x !== null;
       }
     );
-    console.log(countPosition);
-    console.log(arrayOfObjectsWithYourPeoplePositions);
+    let firstVacationPosition = this.checkFirstVacationFromPosition(
+      arrayOfObjectsWithYourPeoplePositions
+    );
+    if (firstVacationPosition) {
+      return true;
+    } else {
+      return this.checkVacationPosition(arrayOfObjectsWithYourPeoplePositions, arrObj);
+    }
+  }
+  checkVacationPosition(arrayOfObjectsWithYourPeoplePositions, arrObj) {
+    let count = 0;
+    let arr = arrayOfObjectsWithYourPeoplePositions.map(function(employee) {
+      if (employee.fullName == arrObj[0].fullName) {
+        count++;
+      } else if (employee.vacation.length == 0) {
+      } else {
+        for (let i = 0; i < employee.vacation.length; i++) {
+          let selectDateFrom = new Date(arrObj[0].vacationFrom);
+          let selectDateOn = new Date(arrObj[0].vacationOn);
+          let dateEmployeeFrom = new Date(employee.vacation[i].vacationFrom);
+          let dateEmployeeOn = new Date(employee.vacation[i].vacationOn);
+          if (
+            (dateEmployeeFrom <= selectDateFrom && selectDateFrom <= dateEmployeeOn) ||
+            (dateEmployeeFrom <= selectDateOn && selectDateOn <= dateEmployeeOn)
+          ) {
+            count++;
+          }
+        }
+      }
+    });
+    let percent = count * 100 / arrayOfObjectsWithYourPeoplePositions.length;
+    if (percent > 50) {
+      return false;
+    }
+    return true;
+  }
+  checkFirstVacationFromPosition(arrObj) {
+    let answer, arr;
+    let allVacationCount = arrObj.length;
+    arr = arrObj.map(function(employee) {
+      if (employee.vacation.length == 0) return employee;
+    });
+    arr = arr.filter(function(x) {
+      return x !== undefined && x !== null;
+    });
+    if (allVacationCount === arr.length) return true;
+    return false;
   }
 }
 export default businessLogic;

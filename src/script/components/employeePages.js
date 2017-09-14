@@ -30,7 +30,8 @@ class employeePages {
       position: "",
       numberOfDaysOfVacation: 24,
       daysInTheLastVacation: "",
-      vacation: []
+      vacation: [],
+      dateOfZeroing: ""
     };
   }
   takeFullNameAndPosition(obj) {

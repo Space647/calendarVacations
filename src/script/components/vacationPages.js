@@ -18,10 +18,34 @@ class vacation {
     document.querySelector(".send").addEventListener("click", () => this.addVacation());
   }
   addVacation() {
+    let arr;
     Promise.resolve()
       .then(() => this.takeValueFromPage())
       .then(obj => this.searchEmployee(obj))
-      .then(arrObj => this.checkBusinessLogic.checkData(arrObj));
+      .then(arrObj => {
+        arr = arrObj;
+        return this.checkBusinessLogic.checkData(arrObj);
+      })
+      .then(state => this.addEmployee(state, arr))
+      .then(arrObj => this.saveEmployee(arrObj));
+  }
+  saveEmployee(arrObj) {
+    Promise.resolve();
+    if (arrObj == undefined) return;
+    let allEmployee = this.dataBase.loadInDb();
+    allEmployee[arrObj[2]] = arrObj[1];
+    this.dataBase.saveUpdateInDb(allEmployee);
+  }
+  addEmployee(state, arrObj) {
+    Promise.resolve();
+    if (state == false) return undefined;
+    let saveObj, obj;
+    obj = {
+      vacationFrom: arrObj[0].vacationFrom,
+      vacationOn: arrObj[0].vacationOn
+    };
+    arrObj[1].vacation.push(obj);
+    return arrObj;
   }
 
   takeValueFromPage() {

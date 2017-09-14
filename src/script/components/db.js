@@ -10,5 +10,10 @@ class db {
     Promise.resolve();
     return JSON.parse(localStorage.getItem("db"));
   }
+  saveUpdateInDb(arr) {
+    if (arr) {
+      localStorage.setItem("db", JSON.stringify(arr));
+    }
+  }
 }
 export default db;
