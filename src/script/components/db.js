@@ -11,6 +11,7 @@ class db {
     return JSON.parse(localStorage.getItem("db"));
   }
   saveUpdateInDb(arr) {
+    Promise.resolve();
     if (arr) {
       localStorage.setItem("db", JSON.stringify(arr));
     }

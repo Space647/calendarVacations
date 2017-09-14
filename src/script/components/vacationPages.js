@@ -12,9 +12,12 @@ class vacation {
     Promise.resolve()
       .then(() => this.dataBase.loadInDb())
       .then(ArrObj => this.renderPage.renderVacationPages(ArrObj))
-      .then(() => this.onClickHandlerBinded());
+      .then(() => this.onClickHandlerBinded())
+      .then(() => this.showNowDate());
   }
   onClickHandlerBinded() {
+    Promise.resolve();
+    if (document.querySelector(".send") == null) return;
     document.querySelector(".send").addEventListener("click", () => this.addVacation());
   }
   addVacation() {
@@ -64,7 +67,7 @@ class vacation {
   }
   searchEmployee(obj) {
     Promise.resolve();
-    if (obj == false) return;
+    if (obj == false || obj == undefined) return;
     let employee, arrObj, selectEmployee;
     arrObj = this.dataBase.loadInDb();
     selectEmployee = arrObj.map(function(selectPeople, index) {
@@ -79,6 +82,14 @@ class vacation {
     document
       .querySelector(".send")
       .removeEventListener("click", this.onClickHandlerBinded);
+  }
+  showNowDate() {
+    Promise.resolve();
+    let date = new Date();
+    document.querySelector(
+      ".dateNow"
+    ).innerHTML = `date now ${date.getDate()} ${date.getMonth() +
+      1} ${date.getFullYear()}`;
   }
 }
 export default vacation;

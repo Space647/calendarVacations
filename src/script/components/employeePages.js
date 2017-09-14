@@ -50,7 +50,8 @@ class employeePages {
     let date = new Date();
     document.querySelector(
       ".dateNow"
-    ).innerHTML = `date now ${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`;
+    ).innerHTML = `date now ${date.getDate()} ${date.getMonth() +
+      1} ${date.getFullYear()}`;
   }
   removeEventOnClick() {
     document

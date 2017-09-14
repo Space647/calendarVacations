@@ -65,6 +65,7 @@ class render {
       </div>
     </div>
   </div>`;
+    if (!ArrObj) return;
     let placeRenderWorkPlace, seleckMenu;
     placeRenderWorkPlace = document.querySelector(".workPlace");
     seleckMenu = ArrObj.map(function(obj) {
