@@ -4,14 +4,15 @@ class employeePages {
   constructor() {
     this.dataBase = new db();
     this.renderPage = new render();
+    this.onClickHandlerBinded = this.onClickHandlerBinded.bind(this);
   }
   workPages() {
     Promise.resolve()
       .then(() => this.renderPage.renderEmployeePages())
-      .then(() => this.addHandlers())
+      .then(() => this.onClickHandlerBinded())
       .then(() => this.showNowDate());
   }
-  addHandlers() {
+  onClickHandlerBinded() {
     Promise.resolve();
     document.querySelector(".send").addEventListener("click", () => this.addEmployee());
   }
@@ -27,15 +28,9 @@ class employeePages {
     return {
       fullName: "",
       position: "",
-      previousVacationFrom: "",
-      previousVacationOn: "",
-      currentVacationFrom: "",
-      currentVacationOn: "",
-      upcomingVacationFrom: "",
-      upcomingVacationOn: "",
-      daysOnVacation: "",
-      daysInTheFirstVacation: "",
-      updateDate: ""
+      numberOfDaysOfVacation: 24,
+      daysInTheLastVacation: "",
+      vacation: []
     };
   }
   takeFullNameAndPosition(obj) {
@@ -55,6 +50,11 @@ class employeePages {
     document.querySelector(
       ".dateNow"
     ).innerHTML = `date now ${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`;
+  }
+  removeEventOnClick() {
+    document
+      .querySelector(".send")
+      .removeEventListener("click", this.onClickHandlerBinded);
   }
 }
 export default employeePages;

@@ -16,6 +16,9 @@ class render {
     </div>
   </div>`;
   }
+  renderTable(table) {
+    document.querySelector(".workPlace").innerHTML = table;
+  }
   renderEmployeePages() {
     Promise.resolve();
     document.querySelector("header").innerHTML = `
@@ -64,7 +67,7 @@ class render {
   </div>`;
     let placeRenderWorkPlace, seleckMenu;
     placeRenderWorkPlace = document.querySelector(".workPlace");
-    seleckMenu = ArrObj.map(function (obj) {
+    seleckMenu = ArrObj.map(function(obj) {
       return (seleckMenu = `<option selected>${obj.fullName}</option>`);
     }).join(" ");
     placeRenderWorkPlace.innerHTML = `

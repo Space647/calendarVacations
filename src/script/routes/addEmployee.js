@@ -1,13 +1,15 @@
 import employee from "../components/employeePages";
+let worker = new employee();
 let addEmployee = {
   name: "addEmployee",
   match: text => text == "addEmployee",
   onBeforeEnter: () => {},
   onEnter: () => {
-    let worker = new employee();
     Promise.resolve().then(() => worker.workPages());
   },
-  onLeave: () => {}
+  onLeave: () => {
+    Promise.resolve().then(() => worker.removeEventOnClick());
+  }
 };
 
 export { addEmployee };

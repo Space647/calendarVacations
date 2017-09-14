@@ -1,13 +1,15 @@
 import vacation from "../components/vacationPages";
+let vac = new vacation();
 let addVacation = {
   name: "addVacatin",
   match: text => text == "addVacation",
   onBeforeEnter: () => {},
   onEnter: () => {
-    let vac = new vacation();
     Promise.resolve().then(() => vac.workPages());
   },
-  onLeave: () => {}
+  onLeave: () => {
+    Promise.resolve().then(() => vac.removeEventOnClick());
+  }
 };
 
 export { addVacation };
