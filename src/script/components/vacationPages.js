@@ -30,8 +30,24 @@ class vacation {
         return this.checkBusinessLogic.checkData(arrObj);
       })
       .then(state => this.addEmployee(state, arr))
+      .then(arrObj => this.addVacationUpdateDate(arrObj))
       .then(arrObj => this.saveEmployee(arrObj));
   }
+
+  addVacationUpdateDate(arrObj) {
+    Promise.resolve();
+    if (arrObj == undefined) return;
+    else if (arrObj[1].dateOfZeroing == "") {
+      let date = new Date(arrObj[1].vacation[0].vacationFrom);
+      let year = date.getFullYear() + 1;
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      arrObj[1].dateOfZeroing = `${year}-${month}-${day}`;
+      return arrObj;
+    }
+    return arrObj;
+  }
+
   saveEmployee(arrObj) {
     Promise.resolve();
     if (arrObj == undefined) return;

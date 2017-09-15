@@ -49,7 +49,7 @@ class render {
     </form>
     `;
   }
-  renderVacationPages(ArrObj) {
+  renderVacationPages(arrObj) {
     Promise.resolve();
     document.querySelector("header").innerHTML = `
     <div class="container">
@@ -65,10 +65,10 @@ class render {
       </div>
     </div>
   </div>`;
-    if (!ArrObj) return;
+    if (!arrObj) return;
     let placeRenderWorkPlace, seleckMenu;
     placeRenderWorkPlace = document.querySelector(".workPlace");
-    seleckMenu = ArrObj.map(function(obj) {
+    seleckMenu = arrObj.map(function(obj) {
       return (seleckMenu = `<option selected>${obj.fullName}</option>`);
     }).join(" ");
     placeRenderWorkPlace.innerHTML = `

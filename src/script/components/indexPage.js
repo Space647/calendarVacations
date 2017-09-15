@@ -30,7 +30,8 @@ class indexPage {
     Promise.resolve()
       .then(() => this.renderPages.renderingIndexPages())
       .then(() => this.creteateTable())
-      .then(() => this.onClickHandlerBinded());
+      .then(() => this.onClickHandlerBinded())
+      .then(() => this.refreshingDateVacations());
   }
   creteateTable(arrObj = this.database.loadInDb()) {
     let table;
@@ -40,12 +41,12 @@ class indexPage {
     <tr>
       <th class="fullName">FullName</th>
       <th>Position</th>
-      <th class="sortVacationFrom">Previous vacation from</th>
-      <th>Previous vacation on</th>
-      <th class="sortVacationFrom">Current vacation from</th>
-      <th>Current vacation on</th>
-      <th class="sortVacationFrom">upcoming vacation from</th>
-      <th>upcoming vacation on</th>
+      <th class="sortVacationFrom table-active">Previous vacation from</th>
+      <th class="table-active">Previous vacation on</th>
+      <th class="sortVacationFrom table-success">Current vacation from</th>
+      <th class="table-success">Current vacation on</th>
+      <th class="sortVacationFrom table-info">upcoming vacation from</th>
+      <th class="table-info">upcoming vacation on</th>
     </tr>
      </thead>`;
     if (this.database.loadInDb() == null) {
@@ -93,21 +94,22 @@ class indexPage {
   }
   createRow(obj, startNumber) {
     let now = new Date();
-    let past = `<th></th><th></th>`;
-    let current = `<th></th><th></th>`;
-    let future = `<th class="${obj.fullName}"></th><th class="${obj.fullName}"></th>`;
+    let past = `<th class="table-active"></th><th class="table-active"></th>`;
+    let current = `<th class="table-success"></th><th class="table-success"></th>`;
+    let future = `<th class="${obj.fullName} table-info"></th><th class="${obj.fullName} table-info"></th>`;
     for (let i = startNumber; i < obj.vacation.length; i++) {
       let dateEmployeeFrom = new Date(obj.vacation[i].vacationFrom);
       let dateEmployeeOn = new Date(obj.vacation[i].vacationOn);
       if (dateEmployeeFrom <= now && now <= dateEmployeeOn) {
-        current = `<th>${obj.vacation[i].vacationFrom}</th><th>${obj.vacation[i]
+        current = `<th class="table-success">${obj.vacation[i]
+          .vacationFrom}</th><th class="table-success">${obj.vacation[i]
           .vacationOn}</th>`;
       } else if (now > dateEmployeeOn) {
-        past = `<th>${obj.vacation[i].vacationFrom}</th><th>${obj.vacation[i]
-          .vacationOn}</th>`;
+        past = `<th class="table-active">${obj.vacation[i]
+          .vacationFrom}</th><th class="table-active">${obj.vacation[i].vacationOn}</th>`;
       } else if (dateEmployeeFrom >= now) {
-        future = `<th class="${obj.fullName}">${obj.vacation[i]
-          .vacationFrom}</th><th class="${obj.fullName}">${obj.vacation[i]
+        future = `<th class="${obj.fullName} table-info">${obj.vacation[i]
+          .vacationFrom}</th><th class="${obj.fullName} table-info">${obj.vacation[i]
           .vacationOn} <a href="#edit"><button type="button" class="btn btn-light">edit</button></a> <button type="button" class="btn btn-light">Del</button></th>`;
       }
     }
@@ -145,6 +147,22 @@ class indexPage {
       .then(() => this.creteateTable(arrObj))
       .then(() => this.removeEventOnClick())
       .then(() => this.onClickHandlerBinded());
+  }
+  refreshingDateVacations() {
+    Promise.resolve();
+    let now = new Date();
+    let users = this.database.loadInDb();
+    let cont = this;
+    let arrUsers = users.map(function(user, index) {
+      if (user.dateOfZeroing == "") return;
+      let date = new Date(user.dateOfZeroing);
+      if (now >= date) {
+        user.dateOfZeroing = "";
+        user.numberOfDaysOfVacation = 24;
+        users[index] = user;
+      }
+    });
+    this.database.saveUpdateInDb(users);
   }
 }
 export default indexPage;
