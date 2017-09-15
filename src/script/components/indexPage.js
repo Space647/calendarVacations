@@ -5,11 +5,32 @@ class indexPage {
     this.database = new db();
     this.loadDB = this.database.loadInDb();
     this.renderPages = new render();
+    this.onClickHandlerBinded = this.onClickHandlerBinded.bind(this);
+  }
+  onClickHandlerBinded() {
+    Promise.resolve();
+    document
+      .querySelector(".fullName")
+      .addEventListener("click", () => this.sortFullName());
+    let sortVacation = document.querySelectorAll(".sortVacationFrom");
+    for (let i = 0; i < sortVacation.length; i++) {
+      sortVacation[i].addEventListener("click", () => this.sortVacationFrom());
+    }
+  }
+  removeEventOnClick() {
+    document
+      .querySelector(".fullName")
+      .removeEventListener("click", this.onClickHandlerBinded);
+    let sortVacation = document.querySelectorAll(".sortVacationFrom");
+    for (let i = 0; i < sortVacation.length; i++) {
+      sortVacation[i].removeEventListener("click", this.onClickHandlerBinded);
+    }
   }
   workPages() {
     Promise.resolve()
-      .then(() => this.renderPages)
-      .then();
+      .then(() => this.renderPages.renderingIndexPages())
+      .then(() => this.creteateTable())
+      .then(() => this.onClickHandlerBinded());
   }
   creteateTable(arrObj = this.database.loadInDb()) {
     let table;
@@ -17,13 +38,13 @@ class indexPage {
     table = `<table class="table table-hover">
     <thead>
     <tr>
-      <th class="sortFullName">FullName</th>
+      <th class="fullName">FullName</th>
       <th>Position</th>
-      <th>Previous vacation from</th>
+      <th class="sortVacationFrom">Previous vacation from</th>
       <th>Previous vacation on</th>
-      <th>Current vacation from</th>
+      <th class="sortVacationFrom">Current vacation from</th>
       <th>Current vacation on</th>
-      <th>upcoming vacation from</th>
+      <th class="sortVacationFrom">upcoming vacation from</th>
       <th>upcoming vacation on</th>
     </tr>
      </thead>`;
@@ -87,13 +108,13 @@ class indexPage {
       } else if (dateEmployeeFrom >= now) {
         future = `<th class="${obj.fullName}">${obj.vacation[i]
           .vacationFrom}</th><th class="${obj.fullName}">${obj.vacation[i]
-          .vacationOn}</th>`;
+          .vacationOn} <a href="#edit"><button type="button" class="btn btn-light">edit</button></a> <button type="button" class="btn btn-light">Del</button></th>`;
       }
     }
     return past + current + future;
   }
   sortFullName() {
-    arrObj = this.database.loadInDb();
+    let arrObj = this.database.loadInDb();
     arrObj.sort(function(a, b) {
       if (a.fullName > b.fullName) {
         return 1;
@@ -103,6 +124,27 @@ class indexPage {
       }
       return 0;
     });
+    Promise.resolve()
+      .then(() => this.creteateTable(arrObj))
+      .then(() => this.removeEventOnClick())
+      .then(() => this.onClickHandlerBinded());
+  }
+  sortVacationFrom() {
+    console.log(1);
+    let arrObj = this.database.loadInDb();
+    arrObj.sort(function(a, b) {
+      if (a.vacation[0].vacationFrom > b.vacation[0].vacationFrom) {
+        return 1;
+      }
+      if (a.vacation[0].vacationFrom < b.vacation[0].vacationFrom) {
+        return -1;
+      }
+      return 0;
+    });
+    Promise.resolve()
+      .then(() => this.creteateTable(arrObj))
+      .then(() => this.removeEventOnClick())
+      .then(() => this.onClickHandlerBinded());
   }
 }
 export default indexPage;

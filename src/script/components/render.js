@@ -17,7 +17,7 @@ class render {
   </div>`;
   }
   renderTable(table) {
-    document.querySelector(".workPlace").innerHTML = table;
+    document.querySelector(".table").innerHTML = table;
   }
   renderEmployeePages() {
     Promise.resolve();
@@ -80,6 +80,58 @@ class render {
       <div class="col-md-12">
       <select class="custom-select">${seleckMenu}</select>
       </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+    <span class="sp2">Vacation from</span>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+    <input type="date" name="calendar" class="vacationFrom">
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+    <span class="sp3">Vacation on</span>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+    <input type="date" name="calendar" class="vacationOn">
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+    <button type="button" class="btn btn-primary btnCenter send">Submit</button>
+    </div>
+    </div>
+    </div>`;
+  }
+  renderingEditPages() {
+    Promise.resolve();
+    document.querySelector("header").innerHTML = `
+    <div class="container">
+    <div class="row">
+      <div class="col-md-10">
+        <span class="dateNow"></span>
+      </div>
+      <div class="col-md-2">
+      <div class="btn-group" role="group" aria-label="Basic example">
+      <a href="#addVacation"><button type="button" class="btn btn-secondary">add vacation</button></a>
+      <a href="#"><button type="button" class="btn btn-secondary">Back</button></a>
+      </div>
+      </div>
+    </div>
+    </div>`;
+    document.querySelector(".workPlace").innerHTML = ` <div class="container">
+    <div class="row">
+    <div class="col-md-12">
+    <span class="sp1">Full name</span>
+    </div>
+    <div class="col-md-12">
+    <span class="fullName"></span>
+    </div>
     </div>
     <div class="row">
     <div class="col-md-12">

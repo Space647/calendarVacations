@@ -1,16 +1,19 @@
 import indexPage from "../components/indexPage";
 import render from "../components/render";
-var index = {
+let indexP = new indexPage();
+let index = {
   name: "index",
   match: "",
-  onBeforeEnter: () => {},
-  onEnter: () => {
-    let renderPage = new render();
-    let index = new indexPage();
-    renderPage.renderingIndexPages();
-    index.creteateTable();
+  onBeforeEnter: () => {
+    document.querySelector(".workPlace").innerHTML = "";
   },
-  onLeave: () => {}
+  onEnter: () => {
+    indexP.workPages();
+  },
+  onLeave: () => {
+    indexP.removeEventOnClick();
+    document.querySelector(".table").innerHTML = "";
+  }
 };
 
 export { index };
