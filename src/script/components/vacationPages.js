@@ -38,12 +38,13 @@ class vacation {
     Promise.resolve();
     let placeRendar = document.querySelector(".status");
     if (!status) {
-      placeRendar.innerHTML = `Check date`;
+      placeRendar.innerHTML = `<span class="alert alert-danger">Check date</span>`;
       return status;
     }
-    placeRendar.innerHTML = `GL in vacation`;
+    placeRendar.innerHTML = `<span class="alert alert-success">GL in vacation</span>`;
     return status;
   }
+
   addVacationUpdateDate(arrObj) {
     Promise.resolve();
     if (arrObj == undefined || arrObj == false) return;

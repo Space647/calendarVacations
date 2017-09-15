@@ -12,6 +12,7 @@ let index = {
   },
   onLeave: () => {
     indexP.removeEventOnClick();
+    clearTimeout(indexP.updateDataOnTable);
     document.querySelector(".table").innerHTML = "";
   }
 };

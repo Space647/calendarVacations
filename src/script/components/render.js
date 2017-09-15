@@ -105,7 +105,7 @@ class render {
     </div>
     <div class="row">
     <div class="col-md-12">
-    <span class="status"></span><br>
+    <div class="status"></div>
     <button type="button" class="btn btn-primary btnCenter send">Submit</button>
     </div>
     </div>

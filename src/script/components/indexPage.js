@@ -6,6 +6,7 @@ class indexPage {
     this.loadDB = this.database.loadInDb();
     this.renderPages = new render();
     this.onClickHandlerBinded = this.onClickHandlerBinded.bind(this);
+    this.updateDataOnTable = this.updateDataOnTable.bind(this);
   }
   onClickHandlerBinded() {
     Promise.resolve();
@@ -31,7 +32,8 @@ class indexPage {
       .then(() => this.renderPages.renderingIndexPages())
       .then(() => this.creteateTable())
       .then(() => this.onClickHandlerBinded())
-      .then(() => this.refreshingDateVacations());
+      .then(() => this.refreshingDateVacations())
+      .then(() => this.updateDataOnTable());
   }
   creteateTable(arrObj = this.database.loadInDb()) {
     let table;
@@ -56,7 +58,7 @@ class indexPage {
       let objList;
 
       objList = arrObj
-        .map(function(employee) {
+        .map(function (employee) {
           let table = `<tr>
           <th>${employee.fullName}</th>
           <th>${employee.position}</th>`;
@@ -117,7 +119,7 @@ class indexPage {
   }
   sortFullName() {
     let arrObj = this.database.loadInDb();
-    arrObj.sort(function(a, b) {
+    arrObj.sort(function (a, b) {
       if (a.fullName > b.fullName) {
         return 1;
       }
@@ -134,7 +136,7 @@ class indexPage {
   sortVacationFrom() {
     console.log(1);
     let arrObj = this.database.loadInDb();
-    arrObj.sort(function(a, b) {
+    arrObj.sort(function (a, b) {
       if (a.vacation[0].vacationFrom > b.vacation[0].vacationFrom) {
         return 1;
       }
@@ -153,7 +155,7 @@ class indexPage {
     let now = new Date();
     let users = this.database.loadInDb();
     let cont = this;
-    let arrUsers = users.map(function(user, index) {
+    let arrUsers = users.map(function (user, index) {
       if (user.dateOfZeroing == "") return;
       let date = new Date(user.dateOfZeroing);
       if (now >= date) {
@@ -163,6 +165,18 @@ class indexPage {
       }
     });
     this.database.saveUpdateInDb(users);
+  }
+  updateDataOnTable() {
+    let cont = this;
+    let now = new Date();
+    let tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    let diff = tomorrow - now;
+    setInterval(function () {
+      Promise.resolve()
+        .then(() => cont.removeEventOnClick())
+        .then(() => cont.creteateTable())
+        .then(() => cont.onClickHandlerBinded());
+    }, diff);
   }
 }
 export default indexPage;
