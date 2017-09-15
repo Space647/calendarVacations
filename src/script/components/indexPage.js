@@ -7,6 +7,7 @@ class indexPage {
     this.renderPages = new render();
     this.onClickHandlerBinded = this.onClickHandlerBinded.bind(this);
     this.updateDataOnTable = this.updateDataOnTable.bind(this);
+    this.removeVacationBinded = this.removeVacationBinded.bind(this);
   }
   onClickHandlerBinded() {
     Promise.resolve();
@@ -26,6 +27,9 @@ class indexPage {
     for (let i = 0; i < sortVacation.length; i++) {
       sortVacation[i].removeEventListener("click", this.onClickHandlerBinded);
     }
+    document
+      .querySelector("table")
+      .removeEventListener("click", this.removeVacationBinded);
   }
   workPages() {
     Promise.resolve()
@@ -33,7 +37,8 @@ class indexPage {
       .then(() => this.creteateTable())
       .then(() => this.onClickHandlerBinded())
       .then(() => this.refreshingDateVacations())
-      .then(() => this.updateDataOnTable());
+      .then(() => this.updateDataOnTable())
+      .then(() => this.removeVacationBinded());
   }
   creteateTable(arrObj = this.database.loadInDb()) {
     let table;
@@ -58,7 +63,7 @@ class indexPage {
       let objList;
 
       objList = arrObj
-        .map(function (employee) {
+        .map(function(employee) {
           let table = `<tr>
           <th>${employee.fullName}</th>
           <th>${employee.position}</th>`;
@@ -112,14 +117,14 @@ class indexPage {
       } else if (dateEmployeeFrom >= now) {
         future = `<th class="${obj.fullName} table-info">${obj.vacation[i]
           .vacationFrom}</th><th class="${obj.fullName} table-info">${obj.vacation[i]
-          .vacationOn} <a href="#edit"><button type="button" class="btn btn-light">edit</button></a> <button type="button" class="btn btn-light">Del</button></th>`;
+          .vacationOn} <a href="#edit"><button type="button" class="btn btn-light ${obj.fullName}">edit</button></a> <button type="button" class="btn btn-light remove ${obj.fullName}">Del</button></th>`;
       }
     }
     return past + current + future;
   }
   sortFullName() {
     let arrObj = this.database.loadInDb();
-    arrObj.sort(function (a, b) {
+    arrObj.sort(function(a, b) {
       if (a.fullName > b.fullName) {
         return 1;
       }
@@ -136,7 +141,7 @@ class indexPage {
   sortVacationFrom() {
     console.log(1);
     let arrObj = this.database.loadInDb();
-    arrObj.sort(function (a, b) {
+    arrObj.sort(function(a, b) {
       if (a.vacation[0].vacationFrom > b.vacation[0].vacationFrom) {
         return 1;
       }
@@ -155,7 +160,7 @@ class indexPage {
     let now = new Date();
     let users = this.database.loadInDb();
     let cont = this;
-    let arrUsers = users.map(function (user, index) {
+    let arrUsers = users.map(function(user, index) {
       if (user.dateOfZeroing == "") return;
       let date = new Date(user.dateOfZeroing);
       if (now >= date) {
@@ -171,12 +176,42 @@ class indexPage {
     let now = new Date();
     let tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     let diff = tomorrow - now;
-    setInterval(function () {
+    setInterval(function() {
       Promise.resolve()
         .then(() => cont.removeEventOnClick())
         .then(() => cont.creteateTable())
-        .then(() => cont.onClickHandlerBinded());
+        .then(() => cont.onClickHandlerBinded())
+        .then(() => cont.removeVacationBinded());
     }, diff);
+  }
+  removeVacationBinded() {
+    Promise.resolve();
+    document.querySelector("table").addEventListener("click", e => {
+      let target = e.target;
+      let user = [];
+      if (target.classList.contains("remove")) {
+        let nameUser = e.target.classList;
+        let users = this.database.loadInDb();
+        users.map(function(people, index) {
+          if (people.fullName == nameUser[3]) {
+            user.push(people, index);
+          }
+        });
+        this.removeVacation(user, users);
+      }
+    });
+  }
+  removeVacation(user, users) {
+    console.log(user);
+    console.log(users);
+    user[0].vacation.splice(-1, 1);
+    console.log(users[user[1]]); //?????
+    Promise.resolve()
+      .then(() => this.database.saveUpdateInDb(users))
+      .then(() => this.removeEventOnClick())
+      .then(() => this.creteateTable())
+      .then(() => this.onClickHandlerBinded())
+      .then(() => this.removeVacationBinded());
   }
 }
 export default indexPage;
