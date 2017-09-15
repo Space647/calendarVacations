@@ -29,14 +29,24 @@ class vacation {
         arr = arrObj;
         return this.checkBusinessLogic.checkData(arrObj);
       })
-      .then(state => this.addEmployee(state, arr))
+      .then(status => this.showStatus(status))
+      .then(status => this.addEmployee(status, arr))
       .then(arrObj => this.addVacationUpdateDate(arrObj))
       .then(arrObj => this.saveEmployee(arrObj));
   }
-
+  showStatus(status) {
+    Promise.resolve();
+    let placeRendar = document.querySelector(".status");
+    if (!status) {
+      placeRendar.innerHTML = `Check date`;
+      return status;
+    }
+    placeRendar.innerHTML = `GL in vacation`;
+    return status;
+  }
   addVacationUpdateDate(arrObj) {
     Promise.resolve();
-    if (arrObj == undefined) return;
+    if (arrObj == undefined || arrObj == false) return;
     else if (arrObj[1].dateOfZeroing == "") {
       let date = new Date(arrObj[1].vacation[0].vacationFrom);
       let year = date.getFullYear() + 1;
