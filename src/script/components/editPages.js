@@ -9,7 +9,8 @@ class editPages {
   workPages() {
     Promise.resolve()
       .then(() => this.renderPages.renderingEditPages())
-      .then(() => onClickHandlerBinded());
+      .then(() => onClickHandlerBinded())
+      .then(() => this.database.loadInDb());
   }
   onClickHandlerBinded() {
     document.querySelector(".send").addEventListener("click", () => {});
