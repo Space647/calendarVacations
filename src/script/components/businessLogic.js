@@ -39,9 +39,11 @@ class businessLogic {
       lastVacation = arrObj[1].vacation[lng - 1].vacationOn;
       lastVacationDate = new Date(lastVacation);
       dateVacationFrom = new Date(arrObj[0].vacationFrom);
+
       lastVacation = lastVacationDate.setDate(
         lastVacationDate.getDate() + arrObj[1].daysInTheLastVacation
       );
+      arrObj[1].daysInTheLastVacation = arrObj[3];
       check = dateVacationFrom >= lastVacation;
       if (check) {
         return arrObj;

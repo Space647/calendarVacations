@@ -133,13 +133,12 @@ class indexPage {
       }
       return 0;
     });
-    Promise.resolve()
+    return Promise.resolve()
       .then(() => this.creteateTable(arrObj))
       .then(() => this.removeEventOnClick())
       .then(() => this.onClickHandlerBinded());
   }
   sortVacationFrom() {
-    console.log(1);
     let arrObj = this.database.loadInDb();
     arrObj.sort(function(a, b) {
       if (a.vacation[0].vacationFrom > b.vacation[0].vacationFrom) {
@@ -150,15 +149,15 @@ class indexPage {
       }
       return 0;
     });
-    Promise.resolve()
+    return Promise.resolve()
       .then(() => this.creteateTable(arrObj))
       .then(() => this.removeEventOnClick())
       .then(() => this.onClickHandlerBinded());
   }
   refreshingDateVacations() {
-    Promise.resolve();
     let now = new Date();
     let users = this.database.loadInDb();
+    if (users == undefined) return;
     let cont = this;
     let arrUsers = users.map(function(user, index) {
       if (user.dateOfZeroing == "") return;
@@ -169,7 +168,7 @@ class indexPage {
         users[index] = user;
       }
     });
-    this.database.saveUpdateInDb(users);
+    Promise.resolve(this.database.saveUpdateInDb(users));
   }
   updateDataOnTable() {
     let cont = this;
@@ -177,7 +176,7 @@ class indexPage {
     let tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     let diff = tomorrow - now;
     setInterval(function() {
-      Promise.resolve()
+      return Promise.resolve()
         .then(() => cont.removeEventOnClick())
         .then(() => cont.creteateTable())
         .then(() => cont.onClickHandlerBinded())
@@ -185,7 +184,6 @@ class indexPage {
     }, diff);
   }
   removeVacationBinded() {
-    Promise.resolve();
     document.querySelector("table").addEventListener("click", e => {
       let target = e.target;
       let user = [];
@@ -193,20 +191,25 @@ class indexPage {
         let nameUser = e.target.classList;
         let users = this.database.loadInDb();
         users.map(function(people, index) {
-          if (people.fullName == nameUser[3]) {
+          let fullName = `${nameUser[3]} ${nameUser[4]}`;
+          if (people.fullName == fullName) {
             user.push(people, index);
           }
         });
-        this.removeVacation(user, users);
+        Promise.resolve(this.removeVacation(user, users));
       }
     });
   }
   removeVacation(user, users) {
-    console.log(user);
-    console.log(users);
+    let lng = user[0].vacation.length;
+    user[0].numberOfDaysOfVacation += user[0].daysInTheLastVacation;
+    let dateVacationFrom = new Date(user[0].vacation[lng - 2].vacationFrom);
+    let dateVacationOn = new Date(user[0].vacation[lng - 2].vacationOn);
+    let daysInVacation = dateVacationOn - dateVacationFrom;
+    daysInVacation = daysInVacation / 1000 / 60 / 60 / 24 + 1;
+    user[0].daysInTheLastVacation = daysInVacation;
     user[0].vacation.splice(-1, 1);
-    console.log(users[user[1]]); //?????
-    Promise.resolve()
+    return Promise.resolve()
       .then(() => this.database.saveUpdateInDb(users))
       .then(() => this.removeEventOnClick())
       .then(() => this.creteateTable())
