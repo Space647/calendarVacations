@@ -89,8 +89,8 @@ class render {
     </div>
     </div>
     <div class="row">
-    <div class="col-md-12">
-    <input type="date" name="calendar" class="vacationFrom">
+    <div class="col-md-12 center">
+    <input type="date" name="calendar" class="vacationFrom form-control">
     </div>
     </div>
     <div class="row">
@@ -98,9 +98,9 @@ class render {
     <span class="sp3">Vacation on</span>
     </div>
     </div>
-    <div class="row">
-    <div class="col-md-12">
-    <input type="date" name="calendar" class="vacationOn">
+    <div class="justify-content-md-center">
+    <div class="col-md-12 center">
+    <input type="date" name="calendar" class="vacationOn form-control">
     </div>
     </div>
     <div class="row">
@@ -130,7 +130,7 @@ class render {
     document.querySelector(".workPlace").innerHTML = ` <div class="container">
     <div class="row">
     <div class="col-md-12">
-    <span class="sp1">Full name</span>
+    <span class="name">Full name</span>
     </div>
     <div class="col-md-12">
     <span class="fullName"></span>
@@ -143,7 +143,7 @@ class render {
     </div>
     <div class="row">
     <div class="col-md-12">
-    <input type="date" name="calendar" class="vacationFrom">
+    <input type="date" name="calendar" class="vacationFrom form-control ">
     </div>
     </div>
     <div class="row">
@@ -153,7 +153,7 @@ class render {
     </div>
     <div class="row">
     <div class="col-md-12">
-    <input type="date" name="calendar" class="vacationOn">
+    <input type="date" name="calendar" class="vacationOn form-control">
     </div>
     </div>
     <div class="row">

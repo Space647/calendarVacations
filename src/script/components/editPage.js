@@ -17,13 +17,13 @@ class EditPage {
       .then(fullName => this.renderFullName(fullName));
   }
   renderFullName(fullName) {
-    document.querySelector(".sp1").innerHTML = fullName;
+    document.querySelector(".name").innerHTML = fullName;
     return fullName;
   }
   takeValueFromPage() {
     Promise.resolve();
     let fullName, vacationOn, vacationFrom;
-    fullName = document.querySelector(".sp1").innerText;
+    fullName = document.querySelector(".name").innerText;
     vacationFrom = document.querySelector(".vacationFrom").value;
     vacationOn = document.querySelector(".vacationOn").value;
     if (fullName === "" || vacationFrom === "" || vacationOn === "") return false;

@@ -31,15 +31,6 @@ class IndexPage {
     document
       .querySelector("table")
       .removeEventListener("click", this.removeVacationBinded);
-    // document
-    //   .querySelector(".sortPreviousVacationFrom")
-    //   .addEventListener("click", () => this.sortVacationFrom(-3));
-    // document
-    //   .querySelector(".sortCurrentVacationFrom")
-    //   .addEventListener("click", () => this.sortVacationFrom(-2));
-    // document
-    //   .querySelector(".sortUpcommingVacationFrom")
-    //   .addEventListener("click", () => this.sortVacationFrom(-1));
   }
   initPage() {
     Promise.resolve()
