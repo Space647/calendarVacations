@@ -67,7 +67,6 @@ class EditPage {
     arrObj.push(objValue, users[index], index);
     let placeRender = document.querySelector(".status");
     this.checkBusinessLogic.checkData(arrObj).then(status => {
-      console.log(status);
       if (status) {
         arrObj = this.addEmployee(arrObj);
         arrObj = this.addVacationUpdateDate(arrObj);

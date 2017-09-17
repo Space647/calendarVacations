@@ -197,7 +197,14 @@ class IndexPage {
         let nameUser = e.target.classList;
         let users = this.database.loadInDb();
         users.map(function(people, index) {
-          let fullName = `${nameUser[3]} ${nameUser[4]}`;
+          let fullName;
+          if (nameUser.length == 4) {
+            fullName = `${nameUser[3]}`;
+          } else if (nameUser.length == 5) {
+            fullName = `${nameUser[3]} ${nameUser[4]}`;
+          } else if (nameUser.length == 6) {
+            fullName = `${nameUser[3]} ${nameUser[4]} ${nameUser[5]}`;
+          }
           if (people.fullName == fullName) {
             user.push(people, index);
           }
