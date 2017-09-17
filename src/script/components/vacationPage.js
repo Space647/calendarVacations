@@ -106,6 +106,7 @@ class VacationPage {
     return [obj, selectedEmployee[0][0], selectedEmployee[0][1]];
   }
   removeEventOnClick() {
+    if (document.querySelector(".send") == null) return;
     document
       .querySelector(".send")
       .removeEventListener("click", this.onClickHandlerBinded);

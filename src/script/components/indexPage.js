@@ -14,22 +14,32 @@ class IndexPage {
     document
       .querySelector(".fullName")
       .addEventListener("click", () => this.sortFullName());
-    let sortVacation = document.querySelectorAll(".sortVacationFrom");
-    for (let i = 0; i < sortVacation.length; i++) {
-      sortVacation[i].addEventListener("click", () => this.sortVacationFrom());
-    }
+    document
+      .querySelector(".sortPreviousVacationFrom")
+      .addEventListener("click", () => this.sortVacationFrom(3));
+    document
+      .querySelector(".sortCurrentVacationFrom")
+      .addEventListener("click", () => this.sortVacationFrom(2));
+    document
+      .querySelector(".sortUpcomimgVacationFrom")
+      .addEventListener("click", () => this.sortVacationFrom(1));
   }
   removeEventOnClick() {
     document
       .querySelector(".fullName")
       .removeEventListener("click", this.onClickHandlerBinded);
-    let sortVacation = document.querySelectorAll(".sortVacationFrom");
-    for (let i = 0; i < sortVacation.length; i++) {
-      sortVacation[i].removeEventListener("click", this.onClickHandlerBinded);
-    }
     document
       .querySelector("table")
       .removeEventListener("click", this.removeVacationBinded);
+    // document
+    //   .querySelector(".sortPreviousVacationFrom")
+    //   .addEventListener("click", () => this.sortVacationFrom(-3));
+    // document
+    //   .querySelector(".sortCurrentVacationFrom")
+    //   .addEventListener("click", () => this.sortVacationFrom(-2));
+    // document
+    //   .querySelector(".sortUpcommingVacationFrom")
+    //   .addEventListener("click", () => this.sortVacationFrom(-1));
   }
   initPage() {
     Promise.resolve()
@@ -48,11 +58,11 @@ class IndexPage {
     <tr>
       <th class="fullName">FullName</th>
       <th>Position</th>
-      <th class="sortVacationFrom table-active">Previous vacation from</th>
+      <th class="sortPreviousVacationFrom table-active">Previous vacation from</th>
       <th class="table-active">Previous vacation on</th>
-      <th class="sortVacationFrom table-success">Current vacation from</th>
+      <th class="sortCurrentVacationFrom table-success">Current vacation from</th>
       <th class="table-success">Current vacation on</th>
-      <th class="sortVacationFrom table-info">upcoming vacation from</th>
+      <th class="sortUpcomimgVacationFrom table-info">upcoming vacation from</th>
       <th class="table-info">upcoming vacation on</th>
     </tr>
      </thead>`;
@@ -73,6 +83,8 @@ class IndexPage {
             table += cont.createRow(employee, 0);
           } else if (employee.vacation.length >= 3) {
             table += cont.createRow(employee, employee.vacation.length - 3);
+          } else {
+            table += cont.createRow(false, false);
           }
           return table;
         })
@@ -86,7 +98,10 @@ class IndexPage {
     let now = new Date();
     let past = `<th class="table-active"></th><th class="table-active"></th>`;
     let current = `<th class="table-success"></th><th class="table-success"></th>`;
-    let future = `<th class="${obj.fullName} table-info"></th><th class="${obj.fullName} table-info"></th>`;
+    let future = `<th class="table-info"></th><th class="table-info"></th>`;
+    if (!obj && !startNumber) {
+      return past + current + future;
+    }
     for (let i = startNumber; i < obj.vacation.length; i++) {
       let dateEmployeeFrom = new Date(obj.vacation[i].vacationFrom);
       let dateEmployeeOn = new Date(obj.vacation[i].vacationOn);
@@ -121,21 +136,38 @@ class IndexPage {
       .then(() => this.removeEventOnClick())
       .then(() => this.onClickHandlerBinded());
   }
-  sortVacationFrom() {
+  sortVacationFrom(i) {
     let arrObj = this.database.loadInDb();
-    arrObj.sort(function(a, b) {
-      if (a.vacation[0].vacationFrom > b.vacation[0].vacationFrom) {
-        return 1;
+    let j;
+    if (!arrObj[0].vacation.length) {
+      for (let k = 1; k < arrObj.length; k++) {
+        if (arrObj[k].vacation.length != undefined) {
+          j = k;
+          break;
+        }
       }
-      if (a.vacation[0].vacationFrom < b.vacation[0].vacationFrom) {
+    }
+    arrObj.sort(function(a, b) {
+      try {
+        let lng = arrObj[j].vacation.length;
+        let dateA = new Date(a.vacation[lng - 1].vacationFrom);
+        let dateB = new Date(b.vacation[lng - 1].vacationFrom);
+        if (dateA > dateB) {
+          return 1;
+        }
+        if (dateA < dateB) {
+          return -1;
+        }
+        return 0;
+      } catch (e) {
         return -1;
       }
-      return 0;
     });
     return Promise.resolve()
       .then(() => this.creteateTable(arrObj))
       .then(() => this.removeEventOnClick())
-      .then(() => this.onClickHandlerBinded());
+      .then(() => this.onClickHandlerBinded())
+      .then(() => this.removeVacationBinded());
   }
   refreshVacationDates() {
     let now = new Date();

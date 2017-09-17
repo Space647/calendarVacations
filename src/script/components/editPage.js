@@ -65,13 +65,18 @@ class EditPage {
     let arr = this.removeVacation(users, index);
     let arrObj = [];
     arrObj.push(objValue, users[index], index);
-    let status = this.checkBusinessLogic.checkData(arrObj);
-    if (status) {
-      arrObj = this.addEmployee(arrObj);
-      arrObj = this.addVacationUpdateDate(arrObj);
-      arrObj = this.updateNumberOfVacationDays(arrObj);
-      this.saveEmployee(arrObj);
-    }
+    let placeRender = document.querySelector(".status");
+    this.checkBusinessLogic.checkData(arrObj).then(status => {
+      console.log(status);
+      if (status) {
+        arrObj = this.addEmployee(arrObj);
+        arrObj = this.addVacationUpdateDate(arrObj);
+        arrObj = this.updateNumberOfVacationDays(arrObj);
+        this.saveEmployee(arrObj);
+        return (placeRender.innerHTML = `<span class="alert alert-success">GL in vacation</span>`);
+      }
+      placeRender.innerHTML = `<span class="alert alert-danger">Check date</span>`;
+    });
   }
   updateNumberOfVacationDays(arrObj) {
     let lng = arrObj[1].vacation.length;
