@@ -203,11 +203,19 @@ class indexPage {
   removeVacation(user, users) {
     let lng = user[0].vacation.length;
     user[0].numberOfDaysOfVacation += user[0].daysInTheLastVacation;
-    let dateVacationFrom = new Date(user[0].vacation[lng - 2].vacationFrom);
-    let dateVacationOn = new Date(user[0].vacation[lng - 2].vacationOn);
-    let daysInVacation = dateVacationOn - dateVacationFrom;
-    daysInVacation = daysInVacation / 1000 / 60 / 60 / 24 + 1;
-    user[0].daysInTheLastVacation = daysInVacation;
+    if (lng == 1) {
+      let dateVacationFrom = new Date(user[0].vacation[lng - 1].vacationFrom);
+      let dateVacationOn = new Date(user[0].vacation[lng - 1].vacationOn);
+      user[0].dateOfZeroing = "";
+      user[0].daysInTheLastVacation = "";
+      user[0].numberOfDaysOfVacation = 24;
+    } else {
+      let dateVacationFrom = new Date(user[0].vacation[lng - 2].vacationFrom);
+      let dateVacationOn = new Date(user[0].vacation[lng - 2].vacationOn);
+      let daysInVacation = dateVacationOn - dateVacationFrom;
+      daysInVacation = daysInVacation / 1000 / 60 / 60 / 24 + 1;
+      user[0].daysInTheLastVacation = daysInVacation;
+    }
     user[0].vacation.splice(-1, 1);
     return Promise.resolve()
       .then(() => this.database.saveUpdateInDb(users))

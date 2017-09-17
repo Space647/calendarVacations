@@ -6,13 +6,31 @@ class businessLogic {
   checkData(arrObj) {
     let array;
     return Promise.resolve()
-      .then(() => this.checkingTheDateRange(arrObj))
+      .then(() => this.checkForMoreThanOneFutureVacation(arrObj))
+      .then(arr => this.checkingTheDateRange(arr))
       .then(arr => this.checkForNumberOfDays(arr))
       .then(arr => {
         array = this.checkForTheNumberOfDaysOfVacation(arr);
       })
       .then(() => this.dataBase.loadInDb())
       .then(obj => this.checkForTheNumberOfEmployeesOnVacation(obj, array));
+  }
+  checkForMoreThanOneFutureVacation(arrObj) {
+    Promise.resolve();
+    let dataNextVacation;
+    let lng = arrObj[1].vacation.length;
+    if (lng == 0) {
+      return arrObj;
+    } else if (lng == 1) {
+      dataNextVacation = new Date(arrObj[1].vacation[0].vacationFrom);
+    } else {
+      dataNextVacation = new Date(arrObj[1].vacation[lng - 2].vacationFrom);
+    }
+    let now = new Date();
+    if (dataNextVacation > now) {
+      return false;
+    }
+    return arrObj;
   }
   checkingTheDateRange(arrObj) {
     Promise.resolve();
