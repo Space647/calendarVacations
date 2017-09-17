@@ -1,6 +1,6 @@
-import db from "./db";
+import db from "../utils/db";
 import render from "./render";
-class indexPage {
+class IndexPage {
   constructor() {
     this.database = new db();
     this.loadDB = this.database.loadInDb();
@@ -31,12 +31,12 @@ class indexPage {
       .querySelector("table")
       .removeEventListener("click", this.removeVacationBinded);
   }
-  workPages() {
+  initPage() {
     Promise.resolve()
       .then(() => this.renderPages.renderingIndexPages())
       .then(() => this.creteateTable())
       .then(() => this.onClickHandlerBinded())
-      .then(() => this.refreshingDateVacations())
+      .then(() => this.refreshVacationDates())
       .then(() => this.updateDataOnTable())
       .then(() => this.removeVacationBinded());
   }
@@ -81,24 +81,7 @@ class indexPage {
       this.renderPages.renderTable(table);
     }
   }
-  createRowIfCountOne(obj, index) {
-    let now = new Date();
-    let dateEmployeeFrom = new Date(obj.vacation[index].vacationFrom);
-    let dateEmployeeOn = new Date(obj.vacation[index].vacationOn);
-    if (dateEmployeeFrom <= now && now <= dateEmployeeOn) {
-      return `<th></th><th></th><th>${obj.vacation[index].vacationFrom}</th><th>${obj
-        .vacation[index]
-        .vacationOn}</th><th class="${obj.fullName}"></th><th class="${obj.fullName}"></th></tr>`;
-    } else if (now > dateEmployeeOn) {
-      return `<th>${obj.vacation[index].vacationFrom}</th><th>${obj.vacation[index]
-        .vacationOn}</th><th></th><th></th><th class="${obj.fullName}"></th><th class="${obj.fullName}"></th></tr>`;
-    } else if (dateEmployeeFrom >= now) {
-      return `<th></th><th></th><th></th><th></th><th class="${obj.fullName}">${obj
-        .vacation[index].vacationFrom}</th><th class="${obj.fullName}">${obj.vacation[
-        index
-      ].vacationOn}</th>`;
-    }
-  }
+
   createRow(obj, startNumber) {
     let now = new Date();
     let past = `<th class="table-active"></th><th class="table-active"></th>`;
@@ -117,7 +100,7 @@ class indexPage {
       } else if (dateEmployeeFrom >= now) {
         future = `<th class="${obj.fullName} table-info">${obj.vacation[i]
           .vacationFrom}</th><th class="${obj.fullName} table-info">${obj.vacation[i]
-          .vacationOn} <a href="#edit"><button type="button" class="btn btn-light ${obj.fullName}">edit</button></a> <button type="button" class="btn btn-light remove ${obj.fullName}">Del</button></th>`;
+          .vacationOn} <a href="#${obj.fullName}"><button type="button" class="btn btn-light ${obj.fullName}">edit</button></a> <button type="button" class="btn btn-light remove ${obj.fullName}">Del</button></th>`;
       }
     }
     return past + current + future;
@@ -154,7 +137,7 @@ class indexPage {
       .then(() => this.removeEventOnClick())
       .then(() => this.onClickHandlerBinded());
   }
-  refreshingDateVacations() {
+  refreshVacationDates() {
     let now = new Date();
     let users = this.database.loadInDb();
     if (users == undefined) return;
@@ -168,7 +151,7 @@ class indexPage {
         users[index] = user;
       }
     });
-    Promise.resolve(this.database.saveUpdateInDb(users));
+    this.database.saveUpdateInDb(users);
   }
   updateDataOnTable() {
     let cont = this;
@@ -225,4 +208,4 @@ class indexPage {
       .then(() => this.removeVacationBinded());
   }
 }
-export default indexPage;
+export default IndexPage;

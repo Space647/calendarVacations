@@ -83,30 +83,26 @@ class businessLogic {
     Promise.resolve();
     if (arrObj == false || arrObj == undefined) return false;
     let objSelectpProfession,
-      arrayOfObjectsWithYourPeoplePositions,
+      arrayOfPositions,
       countPosition = 0;
-    arrayOfObjectsWithYourPeoplePositions = arrObjAllUsers.map(function(user, count) {
+    arrayOfPositions = arrObjAllUsers.map(function(user, count) {
       if (user.position == arrObj[1].position) {
         return user;
       }
     });
-    arrayOfObjectsWithYourPeoplePositions = arrayOfObjectsWithYourPeoplePositions.filter(
-      function(x) {
-        return x !== undefined && x !== null;
-      }
-    );
-    let firstVacationPosition = this.checkFirstVacationFromPosition(
-      arrayOfObjectsWithYourPeoplePositions
-    );
+    arrayOfPositions = arrayOfPositions.filter(function(x) {
+      return x !== undefined && x !== null;
+    });
+    let firstVacationPosition = this.checkFirstVacationFromPosition(arrayOfPositions);
     if (firstVacationPosition) {
       return true;
     } else {
-      return this.checkVacationPosition(arrayOfObjectsWithYourPeoplePositions, arrObj);
+      return this.checkVacationAvailability(arrayOfPositions, arrObj);
     }
   }
-  checkVacationPosition(arrayOfObjectsWithYourPeoplePositions, arrObj) {
+  checkVacationAvailability(arrayOfPositions, arrObj) {
     let count = 0;
-    let arr = arrayOfObjectsWithYourPeoplePositions.map(function(employee) {
+    let arr = arrayOfPositions.map(function(employee) {
       if (employee.fullName == arrObj[0].fullName) {
         count++;
       } else if (employee.vacation.length == 0) {
@@ -125,7 +121,7 @@ class businessLogic {
         }
       }
     });
-    let percent = count * 100 / arrayOfObjectsWithYourPeoplePositions.length;
+    let percent = count * 100 / arrayOfPositions.length;
     if (percent > 50) {
       return false;
     }

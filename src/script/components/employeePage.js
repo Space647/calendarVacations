@@ -1,12 +1,12 @@
-import db from "./db";
+import db from "../utils/db";
 import render from "./render";
-class employeePages {
+class EmployeePage {
   constructor() {
     this.dataBase = new db();
     this.renderPage = new render();
     this.onClickHandlerBinded = this.onClickHandlerBinded.bind(this);
   }
-  workPages() {
+  initPage() {
     Promise.resolve()
       .then(() => this.renderPage.renderEmployeePages())
       .then(() => this.onClickHandlerBinded())
@@ -59,4 +59,4 @@ class employeePages {
       .removeEventListener("click", this.onClickHandlerBinded);
   }
 }
-export default employeePages;
+export default EmployeePage;
