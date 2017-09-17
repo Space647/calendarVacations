@@ -6,13 +6,42 @@ class businessLogic {
   checkData(arrObj) {
     let array;
     return Promise.resolve()
-      .then(() => this.checkingTheDateRange(arrObj))
+      .then(() => this.checkFor(arrObj))
+      .then(arr => this.checkForMoreThanOneFutureVacation(arr))
+      .then(arr => this.checkingTheDateRange(arr))
       .then(arr => this.checkForNumberOfDays(arr))
       .then(arr => {
         array = this.checkForTheNumberOfDaysOfVacation(arr);
       })
       .then(() => this.dataBase.loadInDb())
       .then(obj => this.checkForTheNumberOfEmployeesOnVacation(obj, array));
+  }
+  checkFor(arrObj) {
+    Promise.resolve();
+    let dataNextVacation = new Date(arrObj[0].vacationFrom);
+    let now = new Date();
+    if (dataNextVacation < now) {
+      return false;
+    }
+    return arrObj;
+  }
+  checkForMoreThanOneFutureVacation(arrObj) {
+    Promise.resolve();
+    if (arrObj == false || arrObj == undefined) return false;
+    let dataNextVacation;
+    let lng = arrObj[1].vacation.length;
+    if (lng == 0) {
+      return arrObj;
+    } else if (lng == 1) {
+      dataNextVacation = new Date(arrObj[1].vacation[0].vacationFrom);
+    } else {
+      dataNextVacation = new Date(arrObj[1].vacation[lng - 2].vacationFrom);
+    }
+    let now = new Date();
+    if (dataNextVacation > now) {
+      return false;
+    }
+    return arrObj;
   }
   checkingTheDateRange(arrObj) {
     Promise.resolve();
@@ -39,9 +68,11 @@ class businessLogic {
       lastVacation = arrObj[1].vacation[lng - 1].vacationOn;
       lastVacationDate = new Date(lastVacation);
       dateVacationFrom = new Date(arrObj[0].vacationFrom);
+
       lastVacation = lastVacationDate.setDate(
         lastVacationDate.getDate() + arrObj[1].daysInTheLastVacation
       );
+      arrObj[1].daysInTheLastVacation = arrObj[3];
       check = dateVacationFrom >= lastVacation;
       if (check) {
         return arrObj;
@@ -63,30 +94,26 @@ class businessLogic {
     Promise.resolve();
     if (arrObj == false || arrObj == undefined) return false;
     let objSelectpProfession,
-      arrayOfObjectsWithYourPeoplePositions,
+      arrayOfPositions,
       countPosition = 0;
-    arrayOfObjectsWithYourPeoplePositions = arrObjAllUsers.map(function(user, count) {
+    arrayOfPositions = arrObjAllUsers.map(function(user, count) {
       if (user.position == arrObj[1].position) {
         return user;
       }
     });
-    arrayOfObjectsWithYourPeoplePositions = arrayOfObjectsWithYourPeoplePositions.filter(
-      function(x) {
-        return x !== undefined && x !== null;
-      }
-    );
-    let firstVacationPosition = this.checkFirstVacationFromPosition(
-      arrayOfObjectsWithYourPeoplePositions
-    );
+    arrayOfPositions = arrayOfPositions.filter(function(x) {
+      return x !== undefined && x !== null;
+    });
+    let firstVacationPosition = this.checkFirstVacationFromPosition(arrayOfPositions);
     if (firstVacationPosition) {
       return true;
     } else {
-      return this.checkVacationPosition(arrayOfObjectsWithYourPeoplePositions, arrObj);
+      return this.checkVacationAvailability(arrayOfPositions, arrObj);
     }
   }
-  checkVacationPosition(arrayOfObjectsWithYourPeoplePositions, arrObj) {
+  checkVacationAvailability(arrayOfPositions, arrObj) {
     let count = 0;
-    let arr = arrayOfObjectsWithYourPeoplePositions.map(function(employee) {
+    let arr = arrayOfPositions.map(function(employee) {
       if (employee.fullName == arrObj[0].fullName) {
         count++;
       } else if (employee.vacation.length == 0) {
@@ -105,7 +132,7 @@ class businessLogic {
         }
       }
     });
-    let percent = count * 100 / arrayOfObjectsWithYourPeoplePositions.length;
+    let percent = count * 100 / arrayOfPositions.length;
     if (percent > 50) {
       return false;
     }

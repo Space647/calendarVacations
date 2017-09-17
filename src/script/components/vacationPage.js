@@ -1,14 +1,14 @@
 import render from "./render";
-import db from "./db";
-import businessLogic from "./businessLogic";
-class vacation {
+import db from "../utils/db";
+import businessLogic from "../utils/businessLogic";
+class VacationPage {
   constructor() {
     this.renderPage = new render();
     this.dataBase = new db();
     this.checkBusinessLogic = new businessLogic();
     this.onClickHandlerBinded = this.onClickHandlerBinded.bind(this);
   }
-  workPages() {
+  initPage() {
     Promise.resolve()
       .then(() => this.dataBase.loadInDb())
       .then(ArrObj => this.renderPage.renderVacationPages(ArrObj))
@@ -29,9 +29,36 @@ class vacation {
         arr = arrObj;
         return this.checkBusinessLogic.checkData(arrObj);
       })
-      .then(state => this.addEmployee(state, arr))
+      .then(status => this.showStatus(status))
+      .then(status => this.addEmployee(status, arr))
+      .then(arrObj => this.addVacationUpdateDate(arrObj))
       .then(arrObj => this.saveEmployee(arrObj));
   }
+  showStatus(status) {
+    Promise.resolve();
+    let placeRender = document.querySelector(".status");
+    if (!status) {
+      placeRender.innerHTML = `<span class="alert alert-danger">Check date</span>`;
+      return status;
+    }
+    placeRender.innerHTML = `<span class="alert alert-success">GL in vacation</span>`;
+    return status;
+  }
+
+  addVacationUpdateDate(arrObj) {
+    Promise.resolve();
+    if (arrObj == undefined || arrObj == false) return;
+    else if (arrObj[1].dateOfZeroing == "") {
+      let date = new Date(arrObj[1].vacation[0].vacationFrom);
+      let year = date.getFullYear() + 1;
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      arrObj[1].dateOfZeroing = `${year}-${month}-${day}`;
+      return arrObj;
+    }
+    return arrObj;
+  }
+
   saveEmployee(arrObj) {
     Promise.resolve();
     if (arrObj == undefined) return;
@@ -68,17 +95,18 @@ class vacation {
   searchEmployee(obj) {
     Promise.resolve();
     if (obj == false || obj == undefined) return;
-    let employee, arrObj, selectEmployee;
+    let employee, arrObj, selectedEmployee;
     arrObj = this.dataBase.loadInDb();
-    selectEmployee = arrObj.map(function(selectPeople, index) {
-      if (selectPeople.fullName == obj.fullName) return [selectPeople, index];
+    selectedEmployee = arrObj.map(function(selectedPeople, index) {
+      if (selectedPeople.fullName == obj.fullName) return [selectedPeople, index];
     });
-    selectEmployee = selectEmployee.filter(function(x) {
+    selectedEmployee = selectedEmployee.filter(function(x) {
       return x !== undefined && x !== null;
     });
-    return [obj, selectEmployee[0][0], selectEmployee[0][1]];
+    return [obj, selectedEmployee[0][0], selectedEmployee[0][1]];
   }
   removeEventOnClick() {
+    if (document.querySelector(".send") == null) return;
     document
       .querySelector(".send")
       .removeEventListener("click", this.onClickHandlerBinded);
@@ -92,4 +120,4 @@ class vacation {
       1} ${date.getFullYear()}`;
   }
 }
-export default vacation;
+export default VacationPage;

@@ -1,6 +1,6 @@
-import indexPage from "../components/indexPage";
+import IndexPage from "../components/indexPage";
 import render from "../components/render";
-let indexP = new indexPage();
+let indexP = new IndexPage();
 let index = {
   name: "index",
   match: "",
@@ -8,10 +8,11 @@ let index = {
     document.querySelector(".workPlace").innerHTML = "";
   },
   onEnter: () => {
-    indexP.workPages();
+    indexP.initPage();
   },
   onLeave: () => {
     indexP.removeEventOnClick();
+    clearTimeout(indexP.updateDataOnTable);
     document.querySelector(".table").innerHTML = "";
   }
 };

@@ -49,7 +49,7 @@ class render {
     </form>
     `;
   }
-  renderVacationPages(ArrObj) {
+  renderVacationPages(arrObj) {
     Promise.resolve();
     document.querySelector("header").innerHTML = `
     <div class="container">
@@ -64,13 +64,15 @@ class render {
       </div>
       </div>
     </div>
-  </div>`;
-    if (!ArrObj) return;
+    </div>`;
+    if (!arrObj) return;
     let placeRenderWorkPlace, seleckMenu;
     placeRenderWorkPlace = document.querySelector(".workPlace");
-    seleckMenu = ArrObj.map(function(obj) {
-      return (seleckMenu = `<option selected>${obj.fullName}</option>`);
-    }).join(" ");
+    seleckMenu = arrObj
+      .map(function(obj) {
+        return (seleckMenu = `<option selected>${obj.fullName}</option>`);
+      })
+      .join(" ");
     placeRenderWorkPlace.innerHTML = `
     <div class="container">
       <div class="row">
@@ -103,6 +105,7 @@ class render {
     </div>
     <div class="row">
     <div class="col-md-12">
+    <div class="status"></div>
     <button type="button" class="btn btn-primary btnCenter send">Submit</button>
     </div>
     </div>
@@ -155,6 +158,7 @@ class render {
     </div>
     <div class="row">
     <div class="col-md-12">
+    <div class="status"></div>
     <button type="button" class="btn btn-primary btnCenter send">Submit</button>
     </div>
     </div>
