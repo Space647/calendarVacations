@@ -6,7 +6,7 @@ class businessLogic {
   checkData(arrObj) {
     let array;
     return Promise.resolve()
-      .then(() => this.checkFor(arrObj))
+      .then(() => this.checkForPastDays(arrObj))
       .then(arr => this.checkForMoreThanOneFutureVacation(arr))
       .then(arr => this.checkingTheDateRange(arr))
       .then(arr => this.checkForNumberOfDays(arr))
@@ -16,7 +16,7 @@ class businessLogic {
       .then(() => this.dataBase.loadInDb())
       .then(obj => this.checkForTheNumberOfEmployeesOnVacation(obj, array));
   }
-  checkFor(arrObj) {
+  checkForPastDays(arrObj) {
     Promise.resolve();
     let dataNextVacation = new Date(arrObj[0].vacationFrom);
     let now = new Date();
