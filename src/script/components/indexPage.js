@@ -44,7 +44,7 @@ class IndexPage {
   creteateTable(arrObj = this.database.loadInDb()) {
     let table;
     let cont = this;
-    table = `<table class="table table-hover">
+    table = `<table class="table">
     <thead>
     <tr>
       <th class="fullName">FullName</th>
