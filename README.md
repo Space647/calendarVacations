@@ -17,7 +17,7 @@ npm install
 gulp
 ```
 
-###app structure
+##app structure
 ```
 ├───build
 │   ├───img
