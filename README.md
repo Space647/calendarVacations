@@ -17,7 +17,7 @@ npm install
 gulp
 ```
 
-##app structure
+## app structure
 ```
 ├───build
 │   ├───img
@@ -30,7 +30,7 @@ gulp
     │   ├───routes
     │   └───utils
     └───style
-    ```
+```
 ### requirements
 ```
 Календарь отпусков
